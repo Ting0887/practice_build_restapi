@@ -1,4 +1,3 @@
-# news article api view
 ## Demo Restful api by Django framework
 1. 所有新聞文章內容
 ### API接口 http://127.0.0.1:8000/newsarticles
