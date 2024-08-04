@@ -1,41 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News Articles</title>
+    
 </head>
 <body>
-    <h1>News Articles</h1>
+    <h1>新聞文章</h1>
+    <input type="text" id="search-box" placeholder="Search articles">
+    <button onclick="searchArticles()">Search</button>
+    <div id="no-results" style="display: none;">找不到相關文章</div>
+
     <ul id="articles-list"></ul>
     <script>
         async function fetchArticles() {
             try {
                 const response = await fetch('http://127.0.0.1:8000/newsarticles/');
                 const data = await response.json();
-                const articlesList = document.getElementById('articles-list');
-                data.forEach(article => {
+                displayArticles(data);
+            } catch (error) {
+                console.error('Error fetching articles:', error);
+            }
+        }
+
+        async function searchArticles() {
+            const query = document.getElementById('search-box').value;
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/news_article_search/?q=${query}`);
+                const data = await response.json();
+                console.log('Search results:', data);
+                displayArticles(data);
+            } catch (error) {
+                console.error('Error searching articles:', error);
+            }
+        }
+
+        function displayArticles(articles) {
+            const articlesList = document.getElementById('articles-list');
+            articlesList.innerHTML = '';
+            const noResults = document.getElementById('no-results');
+
+            noResults.style.display = 'none';
+            if (articles.length === 0) {
+                noResults.style.display = 'block';
+                return;
+            }
+            articles.forEach(article => {
                     const listItem = document.createElement('li');
 
-                    // Create the link element
                     const link = document.createElement('a');
                     link.href = article.link; 
-                    link.textContent = `${article.title}`; // Set the text of the link
+                    link.textContent = `${article.title}`; 
 
-                    // Append the link to the list item
                     listItem.appendChild(link);
 
-                    // Add the date-time text to the list item
                     const dateTimeSpan = document.createElement('span');
                     dateTimeSpan.textContent = ` - ${article.date_time}`;
                     listItem.appendChild(dateTimeSpan);
 
-                    // Append the list item to the list
                     articlesList.appendChild(listItem);
-                });
-            } catch (error) {
-                console.error('Error fetching articles:', error);
-            }
+            });
         }
         fetchArticles();
     </script>
