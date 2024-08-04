@@ -12,3 +12,4 @@
 3. Html呈現新聞文章內容 http://127.0.0.1:8000/news_list
 ### ![image](https://hackmd.io/_uploads/rkdW7CnK0.png)
 ### 這個頁面以 HTML 格式顯示所有新聞文章的清單。使用者可以直接在網頁上查看文章標題和發布日期，並點擊連結查看每篇文章的詳細內容
+
